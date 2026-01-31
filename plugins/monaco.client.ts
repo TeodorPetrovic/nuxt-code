@@ -3,7 +3,7 @@ export default defineNuxtPlugin(() => {
     // Configure Monaco Editor worker
     (window as any).MonacoEnvironment = {
       getWorker(_: any, label: string) {
-        const getWorkerModule = (moduleUrl: string, label: string) => {
+        const getWorkerModule = (label: string) => {
           return new Worker(
             new URL(
               `monaco-editor/esm/vs/editor/editor.worker?worker&url`,
@@ -18,35 +18,20 @@ export default defineNuxtPlugin(() => {
 
         switch (label) {
           case 'json':
-            return getWorkerModule(
-              'monaco-editor/esm/vs/language/json/json.worker?worker',
-              label
-            )
+            return getWorkerModule(label)
           case 'css':
           case 'scss':
           case 'less':
-            return getWorkerModule(
-              'monaco-editor/esm/vs/language/css/css.worker?worker',
-              label
-            )
+            return getWorkerModule(label)
           case 'html':
           case 'handlebars':
           case 'razor':
-            return getWorkerModule(
-              'monaco-editor/esm/vs/language/html/html.worker?worker',
-              label
-            )
+            return getWorkerModule(label)
           case 'typescript':
           case 'javascript':
-            return getWorkerModule(
-              'monaco-editor/esm/vs/language/typescript/ts.worker?worker',
-              label
-            )
+            return getWorkerModule(label)
           default:
-            return getWorkerModule(
-              'monaco-editor/esm/vs/editor/editor.worker?worker',
-              label
-            )
+            return getWorkerModule(label)
         }
       }
     }

@@ -71,13 +71,14 @@ const handleDelete = async (item: FileItem) => {
 }
 
 const handleRename = async (item: FileItem, newName: string) => {
-  const oldPath = item.path
-  const newPath = oldPath.substring(0, oldPath.lastIndexOf('/') + 1) + newName
+  const oldPath = item.path.replace(/\\/g, '/')
+  const lastSlash = oldPath.lastIndexOf('/')
+  const newPath = lastSlash >= 0 ? oldPath.substring(0, lastSlash + 1) + newName : newName
   
   try {
     await $fetch('/api/files/rename', {
       method: 'PATCH',
-      body: { oldPath, newPath }
+      body: { oldPath: item.path, newPath }
     })
     refresh()
   } catch (error) {
